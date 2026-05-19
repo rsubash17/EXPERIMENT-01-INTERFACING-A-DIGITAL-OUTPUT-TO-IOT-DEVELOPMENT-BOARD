@@ -1,13 +1,19 @@
 # EXPERIMENT-01-INTERFACING-A-DIGITAL-OUTPUT-TO-IOT-DEVELOPMENT-BOARD
 
 
-## DATE:29/04/2026
+**DATE:**
+28.04.2026
 
-## NAME:R.SUBASH
+**NAME:**
+SUBASH R
 
-## REG NO:212223230218
+
+**ROLL NO:**
+212223230218
 
 
+**DEPARTMENT:**
+AI&DS
 ## Aim
 
 To Interface a Digital output (LED) to ARM IOT development board and write a program to blink an LED.
@@ -96,34 +102,7 @@ With its power-efficient design, built-in LoRaWAN support, and flexible communic
 
 
 ## STM 32 CUBE PROGRAM
-
-```
-#include "main.h"
-
-void SystemClock_Config(void);
-static void MX_GPIO_Init(void);
-
-int main(void)
-{
- 
-  HAL_Init();
-
-  SystemClock_Config();
-
-  MX_GPIO_Init();
- 
-  while (1)
-  {
-	  HAL_GPIO_WritePin(GPIOA,GPIO_PIN_0,GPIO_PIN_SET);
-	  HAL_Delay(5000);
-	  HAL_GPIO_WritePin(GPIOA,GPIO_PIN_0,GPIO_PIN_RESET);
-	  HAL_Delay(5000);
-
-
-  }
-}
-```
-1b
+EXP: 1A
 ```
 /* USER CODE BEGIN Header */
 /**
@@ -222,10 +201,227 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_SET);
-	  HAL_Delay(5000);
-	  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_RESET);
-	  HAL_Delay(5000);
+HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
+HAL_Delay(5000);
+
+HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
+HAL_Delay(5000);
+    /* USER CODE BEGIN 3 */
+  }
+  /* USER CODE END 3 */
+}
+
+/**
+  * @brief System Clock Configuration
+  * @retval None
+  */
+void SystemClock_Config(void)
+{
+  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+
+  /** Configure the main internal regulator output voltage
+  */
+  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE2);
+
+  /** Initializes the CPU, AHB and APB buses clocks
+  */
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_MSI;
+  RCC_OscInitStruct.MSIState = RCC_MSI_ON;
+  RCC_OscInitStruct.MSICalibrationValue = RCC_MSICALIBRATION_DEFAULT;
+  RCC_OscInitStruct.MSIClockRange = RCC_MSIRANGE_6;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure the SYSCLKSource, HCLK, PCLK1 and PCLK2 clocks dividers
+  */
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK3|RCC_CLOCKTYPE_HCLK
+                              |RCC_CLOCKTYPE_SYSCLK|RCC_CLOCKTYPE_PCLK1
+                              |RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_MSI;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+  RCC_ClkInitStruct.AHBCLK3Divider = RCC_SYSCLK_DIV1;
+
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
+/**
+  * @brief GPIO Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_GPIO_Init(void)
+{
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+  /* USER CODE BEGIN MX_GPIO_Init_1 */
+
+  /* USER CODE END MX_GPIO_Init_1 */
+
+  /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : PA0 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /* USER CODE BEGIN MX_GPIO_Init_2 */
+
+  /* USER CODE END MX_GPIO_Init_2 */
+}
+
+/* USER CODE BEGIN 4 */
+
+/* USER CODE END 4 */
+
+/**
+  * @brief  This function is executed in case of error occurrence.
+  * @retval None
+  */
+void Error_Handler(void)
+{
+  /* USER CODE BEGIN Error_Handler_Debug */
+  /* User can add his own implementation to report the HAL error return state */
+  __disable_irq();
+  while (1)
+  {
+  }
+  /* USER CODE END Error_Handler_Debug */
+}
+#ifdef USE_FULL_ASSERT
+/**
+  * @brief  Reports the name of the source file and the source line number
+  *         where the assert_param error has occurred.
+  * @param  file: pointer to the source file name
+  * @param  line: assert_param error line source number
+  * @retval None
+  */
+void assert_failed(uint8_t *file, uint32_t line)
+{
+  /* USER CODE BEGIN 6 */
+  /* User can add his own implementation to report the file name and line number,
+     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+  /* USER CODE END 6 */
+}
+#endif /* USE_FULL_ASSERT */
+```
+EXP: 1B
+```
+/* USER CODE BEGIN Header */
+/**
+  ******************************************************************************
+  * @file           : main.c
+  * @brief          : Main program body
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2026 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
+/* USER CODE END Header */
+/* Includes ------------------------------------------------------------------*/
+#include "main.h"
+
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
+
+/* USER CODE END Includes */
+
+/* Private typedef -----------------------------------------------------------*/
+/* USER CODE BEGIN PTD */
+
+/* USER CODE END PTD */
+
+/* Private define ------------------------------------------------------------*/
+/* USER CODE BEGIN PD */
+
+/* USER CODE END PD */
+
+/* Private macro -------------------------------------------------------------*/
+/* USER CODE BEGIN PM */
+
+/* USER CODE END PM */
+
+/* Private variables ---------------------------------------------------------*/
+
+/* USER CODE BEGIN PV */
+
+/* USER CODE END PV */
+
+/* Private function prototypes -----------------------------------------------*/
+void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
+/* USER CODE BEGIN PFP */
+
+/* USER CODE END PFP */
+
+/* Private user code ---------------------------------------------------------*/
+/* USER CODE BEGIN 0 */
+
+/* USER CODE END 0 */
+
+/**
+  * @brief  The application entry point.
+  * @retval int
+  */
+int main(void)
+{
+
+  /* USER CODE BEGIN 1 */
+
+  /* USER CODE END 1 */
+
+  /* MCU Configuration--------------------------------------------------------*/
+
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  HAL_Init();
+
+  /* USER CODE BEGIN Init */
+
+  /* USER CODE END Init */
+
+  /* Configure the system clock */
+  SystemClock_Config();
+
+  /* USER CODE BEGIN SysInit */
+
+  /* USER CODE END SysInit */
+
+  /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  /* USER CODE BEGIN 2 */
+
+  /* USER CODE END 2 */
+
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
+  while (1)
+  {
+    /* USER CODE END WHILE */
+HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_SET);
+HAL_Delay(5000);
+
+HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_RESET);
+HAL_Delay(5000);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -337,24 +533,30 @@ void assert_failed(uint8_t *file, uint32_t line)
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
-
 ```
 ## OUTPUT
+```
+EXP: 1A
+```
 
-### LED ON
-
-<img width="720" height="1280" alt="iotex1 -led on" src="https://github.com/user-attachments/assets/77d49ac2-5a37-4692-a145-3053e324e526" />
-
-## LED ON
-<img width="720" height="1280" alt="iot led on" src="https://github.com/user-attachments/assets/800b06b7-ee78-4d15-9d9e-6610399737ed" />
+<img width="1328" height="875" alt="WhatsApp Image 2026-04-28 at 4 03 27 PM" src="https://github.com/user-attachments/assets/d65bba92-1d3a-4e2b-b62b-7f6eca0bacf5" />
 
 
-### LED OFF
-<img width="720" height="1280" alt="iot ex-1led off" src="https://github.com/user-attachments/assets/d1ab06e2-8ce2-412b-a070-56ecfc1d16d6" />
 
-### LED OFF
 
-<img width="720" height="1280" alt="iot led off" src="https://github.com/user-attachments/assets/2a80ca99-922c-46d8-82a9-a5b7f02de4b4" />
+<img width="1355" height="884" alt="WhatsApp Image 2026-04-28 at 4 03 44 PM" src="https://github.com/user-attachments/assets/8b450435-e484-47ed-a1d4-c04226ce3a0e" />
+
+```
+EXP: 1B
+```
+
+<img width="985" height="435" alt="WhatsApp Image 2026-04-28 at 4 04 17 PM" src="https://github.com/user-attachments/assets/1338ca6e-7210-46ad-9073-4a8f3bc56278" />
+
+
+
+
+
+<img width="963" height="566" alt="image" src="https://github.com/user-attachments/assets/ec086894-f988-4505-a0dd-60b03d796248" />
 
 
 ## Result
